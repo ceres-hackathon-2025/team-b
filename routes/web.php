@@ -7,8 +7,7 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
     return view('welcome');
-});
-
+})->name('home');
 
 // 認証
 Route::middleware('guest')->group(function () {
