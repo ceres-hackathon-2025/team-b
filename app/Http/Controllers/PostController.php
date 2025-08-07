@@ -60,7 +60,14 @@ class PostController extends Controller
     // タイムライン用のエンドポイント(json)
     public function load_more()
     {
-        // return json
+        $post = Post::inRandomOrder()->first();
+
+        if ($post) {
+            $post->load(['user', 'music']);
+            return response()->json($post);
+        }
+
+        return response()->json(null, 404);
     }
 
 }
