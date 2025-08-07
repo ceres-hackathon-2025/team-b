@@ -9,71 +9,62 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // 廃止
     public function index()
     {
         $posts = Post::orderBy('created_at', 'desc')->get();
         return view('posts.index', compact('posts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // 投稿の作成画面を表示
     public function create()
     {
         return view('posts.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // 投稿を作成
     public function store(Request $request)
     {
-        Music::create([
+        $request->validate([
+            'audio' => 'required|mimes:mp3,wav,m4a',
+            'description' => 'required|string|max:255',
+        ]);
+
+        if ($request->file('audio')) {
+            $file = $request->file('audio');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('post-audio', $filename, 'public');
+        } else {
+            return redirect()->back()->with('error', '音声ファイルがありません。');
+        }
+
+        # 仮
+        $music = Music::create([
             'title' => "test music",
             'photo_path' => "fsa"
         ]);
-        Post::create([
+
+        $post = Post::create([
             'user_id' => Auth::id(),
-            'audio_path' => "test_audio_path",
-            'music_id' => 1,
+            'audio_path' => $path,
+            'music_id' => $music->id,
             'description' => $request->description
         ]);
-        
-        return redirect()->route('posts.index')->with('success', '投稿しました！');
+
+        return redirect()->route('posts.show', $post->id)->with('success', '投稿しました！');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    // 個別の投稿を表示するが疑似SPAで事実上タイムライン
     public function show(string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        return view('posts.show', compact('post'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    // タイムライン用のエンドポイント(json)
+    public function load_more()
     {
-        //
+        // return json
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }
