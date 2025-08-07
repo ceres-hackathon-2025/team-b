@@ -60,13 +60,12 @@
                     </a>
                 </p>
             </form>
+            @if($errors->any())
+                <div style="color: red;">
+                    {{ $errors->first() }}
+                </div>
+            @endif
         </div>
     </div>
 </section>
-
-@if($errors->any())
-    <div style="color: red;">
-        {{ $errors->first() }}
-    </div>
-@endif
 @endsection
