@@ -1,4 +1,4 @@
-{{-- resources/views/profile/show.blade.php --}}
+{{-- resources/views/profile/index.blade.php --}}
 @extends('layouts.app')
 
 @section('title', $user->name . ' のプロフィール')
