@@ -20,9 +20,9 @@ class AuthController extends Controller
     /**
      * ログインフォーム表示
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
-    public function showLoginForm()
+    public function showLoginForm(): View
     {
         return view('auth.login');
     }
@@ -33,7 +33,7 @@ class AuthController extends Controller
      *
      * @param Request $request リクエストオブジェクト
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function login(Request $request): RedirectResponse
     {
@@ -50,7 +50,7 @@ class AuthController extends Controller
     /**
      * ユーザー登録処理
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
     public function showSignupForm(): View
     {
@@ -62,7 +62,7 @@ class AuthController extends Controller
      *
      * @param Request $request リクエストオブジェクト
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function register(Request $request): RedirectResponse
     {
@@ -90,7 +90,7 @@ class AuthController extends Controller
      *
      * @param Request $request リクエストオブジェクト
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function logout(Request $request): RedirectResponse
     {
