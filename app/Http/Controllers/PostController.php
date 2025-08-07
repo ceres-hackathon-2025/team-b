@@ -53,7 +53,7 @@ class PostController extends Controller
     // 個別の投稿を表示するが疑似SPAで事実上タイムライン
     public function show(string $id)
     {
-        $post = Post::findOrFail($id);
+        $post = Post::with(['user', 'music'])->findOrFail($id);
         return view('posts.show', compact('post'));
     }
 
