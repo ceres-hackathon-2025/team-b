@@ -3,30 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') しっくりボーカル</title>
+    <title>@yield('title', 'しっくりボーカル')</title>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-    <style>
-      header {
-        position: sticky;
-        top: 0;
-        height: 36px;
-        line-height: 36px;
-      }
-      main {
-        padding: 0 0 200px;
-      }
-    </style>
 </head>
 <body>
-    <header>
-      <a href="/">しっくりボーカル</a>
+    @hasSection('ignore-header')
+        {{-- @section('ignore-header', true)でヘッダーを表示しない --}}
+    @else
+    <header class="sticky top-0 h-9 leading-9">
+      <a href="{{ route('home') }}">しっくりボーカル</a>
     </header>
+    @endif
 
-    <main>
+    <main class="pb-[200px]">
         @yield('content')
     </main>
 
+    @hasSection('ignore-footer')
+        {{-- @section('ignore-footer', true)でフッターを表示しない --}}
+    @else
     <footer>
         <div class="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border border-gray-200 rounded-full bottom-4 left-1/2 dark:bg-gray-700 dark:border-gray-600">
             <div class="grid h-full max-w-lg grid-cols-3 mx-auto">
@@ -65,5 +61,6 @@
             </div>
         </div>
     </footer>
+    @endif
 </body>
 </html>
