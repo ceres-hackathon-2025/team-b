@@ -76,8 +76,6 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
             ]
         );
 
