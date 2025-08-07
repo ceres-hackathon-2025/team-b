@@ -14,7 +14,7 @@
         line-height: 36px;
       }
       main {
-        padding: 34px 0 200px;
+        padding: 0 0 200px;
       }
     </style>
 </head>
