@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\Music;
 use Illuminate\Http\Request;
@@ -35,7 +36,7 @@ class PostController extends Controller
             'photo_path' => "fsa"
         ]);
         Post::create([
-            'user_id' => 1,
+            'user_id' => Auth::id(),
             'audio_path' => "test_audio_path",
             'music_id' => 1,
             'description' => $request->description
