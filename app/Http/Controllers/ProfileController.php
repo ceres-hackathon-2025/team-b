@@ -13,7 +13,7 @@ class ProfileController extends Controller
     public function show()
     {
         $user  = Auth::user();
-        return view('profile.test', compact('user'));
+        return view('profile.index', compact('user'));
     }
 
     /** プロフィール更新 */
@@ -36,8 +36,7 @@ class ProfileController extends Controller
                 Storage::disk('public')->delete($user->avatar_url);
             }
 
-            $path = $request->file('avatar')
-                            ->store('images', 'public');
+            $path = $request->file('avatar')->store('images', 'public');
             $validated['avatar_url'] = $path;
         }
 
