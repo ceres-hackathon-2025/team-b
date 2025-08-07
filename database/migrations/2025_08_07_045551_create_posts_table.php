@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('audio_path');
-            $table->foreignId('music_id')->constrained()->onDelete('cascade');
+            $table->foreignId('music_id')->constrained('musics')->onDelete('cascade');
             $table->text('description')->nullable();
             $table->timestamps();
         });
