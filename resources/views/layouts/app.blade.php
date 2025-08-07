@@ -16,13 +16,15 @@
     </header>
     @endif
 
-    <main class="pb-[200px]">
+    <main class="">
         @yield('content')
     </main>
 
     @hasSection('ignore-footer')
         {{-- @section('ignore-footer', true)でフッターを表示しない --}}
     @else
+    <div class="h-24">
+    </div>
     <footer>
         <div class="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border border-gray-200 rounded-full bottom-4 left-1/2 dark:bg-gray-700 dark:border-gray-600">
             <div class="grid h-full max-w-lg grid-cols-3 mx-auto">
