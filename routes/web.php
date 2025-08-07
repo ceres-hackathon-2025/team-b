@@ -10,7 +10,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile',        [ProfileController::class, 'show'])->name('profile.show');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+});
 
 // 認証
 Route::middleware('guest')->group(function () {
