@@ -19,7 +19,8 @@ class PostController extends Controller
     // 投稿の作成画面を表示
     public function create()
     {
-        return view('posts.create');
+        $musics = Music::all(); // 負荷、ここでは見逃していただきたい
+        return view('posts.create', compact('musics'));
     }
 
     // 投稿を作成
@@ -28,6 +29,7 @@ class PostController extends Controller
         $request->validate([
             'audio' => 'required|mimes:mp3,wav,m4a',
             'description' => 'required|string|max:255',
+            'music_id' => 'required|exists:musics,id',
         ]);
 
         if ($request->file('audio')) {
@@ -38,16 +40,10 @@ class PostController extends Controller
             return redirect()->back()->with('error', '音声ファイルがありません。');
         }
 
-        # 仮
-        $music = Music::create([
-            'title' => "test music",
-            'photo_path' => "fsa"
-        ]);
-
         $post = Post::create([
             'user_id' => Auth::id(),
             'audio_path' => $path,
-            'music_id' => $music->id,
+            'music_id' => $request->music_id,
             'description' => $request->description
         ]);
 

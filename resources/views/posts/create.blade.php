@@ -6,6 +6,21 @@
     <form class="max-w-sm mx-auto" action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-5">
+            <label for="music_id">楽曲:</label>
+            <select name="music_id" id="music_id" required>
+                <option value="" disabled selected>選択してください</option>
+                @foreach($musics as $music)
+                    <option value="{{ $music->id }}" {{ old('music_id') == $music->id ? 'selected' : '' }}>
+                        {{ $music->title }}
+                    </option>
+                @endforeach
+            </select>
+            @error('music_id')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        
+        <div class="mb-5">
             <label for="description" class="block mb-2 text-sm font-medium text-gray-900">説明欄</label>
             <textarea name="description" id="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="内容を記載">{{ old('description') }}</textarea>
             @error('description')
