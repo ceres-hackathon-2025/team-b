@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\Music;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller
 {
@@ -57,8 +58,11 @@ class PostController extends Controller
         return view('posts.show', compact('post'));
     }
 
+    /**
+     * @return JsonResponse
+     */
     // タイムライン用のエンドポイント(json)
-    public function load_more()
+    public function load_more(): JsonResponse
     {
         $post = Post::inRandomOrder()->first();
 
