@@ -13,7 +13,7 @@ class ProfileController extends Controller
     public function show()
     {
         $user  = Auth::user();
-        return view('profile.test', compact('user'));
+        return view('profile.index', compact('user'));
     }
 
     /** プロフィール更新 */
@@ -31,14 +31,14 @@ class ProfileController extends Controller
 
         // ---------- アバター画像の保存 ----------
         if ($request->hasFile('avatar')) {
-            // 古いアバターがあれば削除
-            if ($user->avatar_url && Storage::disk('public')->exists($user->avatar_url)) {
-                Storage::disk('public')->delete($user->avatar_url);
+            // 古いアバター削除
+            if ($user->avatar_url && Storage::disk('local')->exists('public/'.$user->avatar_url)) {
+                Storage::disk('local')->delete('public/'.$user->avatar_url);
             }
-
-            $path = $request->file('avatar')
-                            ->store('images', 'public');
-            $validated['avatar_url'] = $path;
+        
+            // 保存先: storage/app/public/images
+            $path = $request->file('avatar')->store('images', 'public');
+            $validated['avatar_url'] = $path; // 'images/xxxx.png'
         }
 
         // ---------- ユーザー更新 ----------

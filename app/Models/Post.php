@@ -6,13 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-
     protected $fillable = [
         'description',
         'user_id',
         'audio_path',
         'music_id'
     ];
+
+    /**
+     * 紐づくユーザー
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /**
      * 紐づく音源
@@ -50,4 +57,3 @@ class Post extends Model
         return $this->hasMany(View::class);
     }
 }
-

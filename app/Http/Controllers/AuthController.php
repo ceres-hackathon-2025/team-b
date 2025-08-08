@@ -41,7 +41,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+            return redirect()->intended('/posts');
         }
 
         return back()->withErrors(['email' => 'メールアドレスまたはパスワードが正しくありません。']);
@@ -74,7 +74,7 @@ class AuthController extends Controller
             ]
         );
 
-        User::create(
+        $user = User::create(
             [
                 'name' => $request->name,
                 'email' => $request->email,
@@ -82,7 +82,10 @@ class AuthController extends Controller
             ]
         );
 
-        return redirect('/login')->with('success', '登録が完了しました。ログインしてください。');
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        return redirect('/posts');
     }
 
     /**
