@@ -6,14 +6,18 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\Music;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller
 {
-    // 廃止
+    // ランダムに/posts/{id}へリダイレクト
     public function index()
     {
-        $posts = Post::orderBy('created_at', 'desc')->get();
-        return view('posts.index', compact('posts'));
+        $post = Post::inRandomOrder()->first();
+        if (!$post) {
+            return redirect()->route('home')->with('error', '投稿がありません。');
+        }
+        return redirect()->route('posts.show', $post->id);
     }
 
     // 投稿の作成画面を表示
@@ -30,6 +34,15 @@ class PostController extends Controller
             'audio' => 'required|mimes:mp3,wav,m4a',
             'description' => 'required|string|max:255',
             'music_id' => 'required|exists:musics,id',
+        ], [
+            'audio.required' => '音声ファイルを選択してください。',
+            'audio.file' => 'アップロードされたものはファイルではありません。',
+            'audio.mimes' => '対応している音声形式は mp3, wav, aac のみです。',
+            'audio.uploaded' => '音声ファイルについて、原因不明のエラー。',
+            'description.required' => '説明文を入力してください。',
+            'description.max' => '説明文は255文字以内で入力してください。',
+            'music_id.required' => '音楽を選択してください。',
+            'music_id.exists' => '選択した音楽は存在しません。',
         ]);
 
         if ($request->file('audio')) {
@@ -53,14 +66,24 @@ class PostController extends Controller
     // 個別の投稿を表示するが疑似SPAで事実上タイムライン
     public function show(string $id)
     {
-        $post = Post::findOrFail($id);
+        $post = Post::with(['user', 'music'])->findOrFail($id);
         return view('posts.show', compact('post'));
     }
 
+    /**
+     * @return JsonResponse
+     */
     // タイムライン用のエンドポイント(json)
-    public function load_more()
+    public function load_more(): JsonResponse
     {
-        // return json
+        $post = Post::inRandomOrder()->first();
+
+        if ($post) {
+            $post->load(['user', 'music']);
+            return response()->json($post);
+        }
+
+        return response()->json(null, 404);
     }
 
 }
