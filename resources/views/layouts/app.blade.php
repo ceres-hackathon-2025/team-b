@@ -64,5 +64,6 @@
         </div>
     </footer>
     @endif
+    @stack('scripts')
 </body>
 </html>
