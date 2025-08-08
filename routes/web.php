@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SearchController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -31,5 +32,4 @@ Route::post('/signup', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 // 検索ページ
-Route::get('/search', fn () => view('search.index'));          // 画面
-Route::get('/api/search', [SearchApiController::class, 'index']); // JSON
+Route::get('/search', [SearchController::class, 'index']);   // JSONで返す想定
