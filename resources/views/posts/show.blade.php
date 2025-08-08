@@ -51,27 +51,29 @@
             scrollbar-width: none;  /* Firefox */
         }
 
-        /* --- 楽曲情報のスタイル --- */
-        .music-info {
+        /* --- 上部コンテンツ（楽曲情報） --- */
+        .top-content {
             position: absolute;
-            top: 60px; /* 上からの位置を調整 */
-            left: 20px;
+            top: 40px; /* 上からの位置 */
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
+            flex-direction: column;
             align-items: center;
             z-index: 2;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 8px 12px;
-            border-radius: 20px;
+            text-align: center;
         }
-        .music-info img {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            margin-right: 8px;
+        .music-artwork {
+            width: 200px; /* サイズを大きく */
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px; /* 角を少し丸める */
+            margin-bottom: 15px;
         }
-        .music-info span {
-            font-size: 0.9rem;
+        .music-title {
+            font-size: 1.2rem;
             font-weight: bold;
+            color: white;
         }
 
         /* --- 各動画アイテムのスタイル --- */
@@ -102,39 +104,37 @@
             margin-bottom: 20px;
         }
 
-        /* --- ユーザー情報のスタイル --- */
-        .user-info {
+        /* --- 下部コンテンツ（ユーザー情報と説明） --- */
+        .bottom-content {
+            position: absolute;
+            bottom: 170px; /* 下からの位置 */
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 15px;
-            position: absolute; /* 位置を調整しやすくする */
-            bottom: 200px; /* 下からの位置 */
-            left: 20px;
             z-index: 2;
+            text-align: center;
+            width: 90%;
         }
-        .user-info img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-            border: 2px solid white;
-        }
-        .user-info span {
+        .user-name {
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
         }
-
-        /* --- 説明文のスタイル --- */
+        .user-avatar {
+            width: 60px; /* 音源画像より小さく */
+            height: 60px;
+            border-radius: 50%; /* 丸くする */
+            border: 2px solid white;
+            margin-bottom: 15px;
+        }
         .description {
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.8);
-            position: absolute; /* 位置を調整しやすくする */
-            bottom: 184px; /* 下からの位置 */
-            left: 20px;
-            right: 20px;
-            text-align: left;
-            z-index: 2;
+            color: rgba(255, 255, 255, 0.9);
             white-space: pre-wrap; /* 改行を反映 */
+            max-height: 100px; /* 説明文の最大高さ */
+            overflow-y: auto; /* スクロール可能に */
         }
 
         .video-item::before {
@@ -187,56 +187,60 @@
             item.classList.add('video-item');
             item.style.backgroundColor = `hsl(${Math.random() * 360}, 50%, 30%)`;
             if (postData.id) {
-                item.dataset.postId = postData.id; // post-idをdata属性として保存
+                item.dataset.postId = postData.id;
             }
 
-            // Intersection Observerで監視を開始
             audioObserver.observe(item);
 
-            // 楽曲情報
+            // --- 上部コンテンツ ---
+            const topContent = document.createElement('div');
+            topContent.classList.add('top-content');
+
             if (postData.music) {
-                const musicInfo = document.createElement('div');
-                musicInfo.classList.add('music-info');
-                
-                const musicIcon = document.createElement('img');
-                musicIcon.src = postData.music.photo_path ? `/storage/${postData.music.photo_path}` : 'https://via.placeholder.com/24';
-                musicIcon.alt = postData.music.title;
+                const musicArtwork = document.createElement('img');
+                musicArtwork.classList.add('music-artwork');
+                musicArtwork.src = postData.music.photo_path ? `/storage/${postData.music.photo_path}` : 'https://via.placeholder.com/200';
+                musicArtwork.alt = postData.music.title;
 
                 const musicTitle = document.createElement('span');
+                musicTitle.classList.add('music-title');
                 musicTitle.textContent = postData.music.title;
 
-                musicInfo.appendChild(musicIcon);
-                musicInfo.appendChild(musicTitle);
-                item.appendChild(musicInfo);
+                topContent.appendChild(musicArtwork);
+                topContent.appendChild(musicTitle);
             }
+            item.appendChild(topContent);
 
-            // 音声プレーヤー
+            // --- 音声プレーヤー ---
             const audioPlayer = document.createElement('audio');
             audioPlayer.classList.add('audio-player');
             audioPlayer.controls = true;
-            // postData.audio_path がない場合（ダミーデータ）はsrcを設定しない
             if (postData.audio_path) {
                 audioPlayer.src = `/storage/${postData.audio_path}`;
             }
             item.appendChild(audioPlayer);
 
-            // ユーザー情報
-            const userInfo = document.createElement('div');
-            userInfo.classList.add('user-info');
-            const userIcon = document.createElement('img');
-            userIcon.src = postData.user && postData.user.avatar ? `/storage/${postData.user.avatar}` : 'https://via.placeholder.com/40';
-            userIcon.alt = postData.user ? postData.user.name : 'Dummy User';
-            const userName = document.createElement('span');
-            userName.textContent = postData.user ? postData.user.name : 'Dummy User';
-            userInfo.appendChild(userIcon);
-            userInfo.appendChild(userName);
-            item.appendChild(userInfo);
+            // --- 下部コンテンツ ---
+            const bottomContent = document.createElement('div');
+            bottomContent.classList.add('bottom-content');
 
-            // 説明
-            const description = document.createElement('div');
+            const userName = document.createElement('span');
+            userName.classList.add('user-name');
+            userName.textContent = postData.user ? postData.user.name : 'Dummy User';
+
+            const userAvatar = document.createElement('img');
+            userAvatar.classList.add('user-avatar');
+            userAvatar.src = postData.user && postData.user.avatar ? `/storage/${postData.user.avatar}` : 'https://via.placeholder.com/60';
+            userAvatar.alt = postData.user ? postData.user.name : 'Dummy User';
+
+            const description = document.createElement('p');
             description.classList.add('description');
             description.textContent = postData.description || 'これはダミーの投稿です。';
-            item.appendChild(description);
+
+            bottomContent.appendChild(userName);
+            bottomContent.appendChild(userAvatar);
+            bottomContent.appendChild(description);
+            item.appendChild(bottomContent);
 
             return item;
         }
