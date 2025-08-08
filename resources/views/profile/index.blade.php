@@ -4,7 +4,7 @@
 @section('title', $user->name . ' のプロフィール')
 
 @section('content')
-    <div class="w-full bg-white rounded-lg dark:bg-gray-800 px-4 max-w-md md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto">
+    <div class="w-full bg-gray-50 dark:bg-gray-900 rounded-lg px-4 max-w-md md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto">
 
         {{-- 上部ボタン群（編集 & ログアウト） --}}
         <div class="flex justify-between px-4 pt-4">
@@ -33,9 +33,7 @@
         {{-- プロフィール本体 --}}
         <div class="flex flex-col items-center pb-10">
             <img class="w-24 h-24 mb-3 rounded-full shadow-lg"
-                src="{{ $user->avatar_url
-                        ? asset('storage/'.$user->avatar_url)
-                        : asset('storage/images/default-avatar.png') }}"
+                src="{{ $user->avatar_url ? asset('storage/' . $user->avatar_url) : asset('storage/images/default-avatar.png') }}"
                 alt="avatar" />
             <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ $user->name }}</h5>
             <span class="text-sm text-gray-500 dark:text-gray-400">{{ $user->email }}</span>
