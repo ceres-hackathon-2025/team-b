@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+
     protected $fillable = [
         'description',
         'user_id',
@@ -49,3 +50,4 @@ class Post extends Model
         return $this->hasMany(View::class);
     }
 }
+
