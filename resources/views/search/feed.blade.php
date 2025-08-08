@@ -395,7 +395,7 @@
 
                     // クリックで post/{id} に遷移
                     if (it?.id) {
-                        window.location.href = `/post/${it.id}`;
+                        window.location.href = `/posts/${it.id}`;
                     } else {
                         console.error("❌ IDが存在しないため遷移できません", it);
                     }
