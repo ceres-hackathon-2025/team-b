@@ -59,7 +59,18 @@
         transform: translateX(-50%); 
         display: inline-block;">
         <img src="{{ asset('/111.png') }}" alt="ログイン" style="cursor: pointer; width: 500px; z-index: 9999; max-width: 80vw;"></a>
-    <script>
+   
+
+    <img src="{{ asset('/woman.png') }}"  style="position: fixed; top: 450px; left: 110px; cursor: pointer; width: 800px; max-width: 80vw; ;"></a>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <a href="{{ route('login') }}">
+    <button class="animate-bounce rounded bg-blue-500 px-6 py-5 font-bold text-white hover:bg-blue-700"
+      style="position: fixed; bottom: 100px; left: 40%; transform: translateX(-50%); z-index: 9999;">
+    聴いてみよう！
+  </button></a>
+@endsection
+@push('scripts')
+ <script>
         document.addEventListener('DOMContentLoaded', function () {
             const container = document.getElementById('shooting-stars');
             const lyrics = [
@@ -88,12 +99,3 @@
             setInterval(createShootingStar, 100);
         });
     </script>
-
-    <img src="{{ asset('/woman.png') }}"  style="position: fixed; top: 450px; left: 110px; cursor: pointer; width: 800px; max-width: 80vw; ;"></a>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <a href="{{ route('login') }}">
-    <button class="animate-bounce rounded bg-blue-500 px-6 py-5 font-bold text-white hover:bg-blue-700"
-      style="position: fixed; bottom: 100px; left: 40%; transform: translateX(-50%); z-index: 9999;">
-    聴いてみよう！
-  </button></a>
-@endsection
