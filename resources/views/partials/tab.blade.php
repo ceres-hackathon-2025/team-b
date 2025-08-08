@@ -3,8 +3,7 @@
         <a href="{{ route('home') }}" class="flex-shrink-0 ml-3">
             <img src="{{ asset('/666.png') }}"  class="h-11 w-auto cursor-pointer mt-1.5">
         </a>
-
-
+        
         <ul class="flex flex-wrap -mb-px">
             <li class="me-2">
                 <a href="#" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">おすすめ</a>
