@@ -15,6 +15,14 @@ class Post extends Model
     ];
 
     /**
+     * 紐づくユーザー
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
      * 紐づく音源
      */
     public function music()
