@@ -4,12 +4,117 @@
 @section('ignore-header', true)
 
 @section('content')
-    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Tailwind v4対応のカスタムプロパティ */
+        :root {
+            --color-neutral-950: #0a0a0a;
+            --color-neutral-900: #171717;
+            --color-neutral-800: #262626;
+            --color-neutral-700: #404040;
+            --color-neutral-400: #a3a3a3;
+            --color-neutral-200: #e5e5e5;
+            --color-emerald-700: #047857;
+            --color-emerald-600: #059669;
+            --color-emerald-500: #10b981;
+            --color-red-400: #f87171;
+        }
+
+        .bg-neutral-950 {
+            background-color: var(--color-neutral-950);
+        }
+
+        .bg-neutral-900 {
+            background-color: var(--color-neutral-900);
+        }
+
+        .bg-neutral-800 {
+            background-color: var(--color-neutral-800);
+        }
+
+        .bg-neutral-700 {
+            background-color: var(--color-neutral-700);
+        }
+
+        .text-neutral-400 {
+            color: var(--color-neutral-400);
+        }
+
+        .text-neutral-200 {
+            color: var(--color-neutral-200);
+        }
+
+        .text-red-400 {
+            color: var(--color-red-400);
+        }
+
+        .bg-emerald-700 {
+            background-color: var(--color-emerald-700);
+        }
+
+        .bg-emerald-600 {
+            background-color: var(--color-emerald-600);
+        }
+
+        .bg-emerald-500 {
+            background-color: var(--color-emerald-500);
+        }
+
+        .hover\:bg-emerald-500:hover {
+            background-color: var(--color-emerald-500);
+        }
+
+        .hover\:bg-emerald-700:hover {
+            background-color: var(--color-emerald-700);
+        }
+
+        .hover\:bg-neutral-700:hover {
+            background-color: var(--color-neutral-700);
+        }
+
+        .hover\:text-neutral-200:hover {
+            color: var(--color-neutral-200);
+        }
+
+        .ring-neutral-800 {
+            --tw-ring-color: var(--color-neutral-800);
+        }
+
+        .ring-emerald-500 {
+            --tw-ring-color: var(--color-emerald-500);
+        }
+
+        .ring-emerald-600 {
+            --tw-ring-color: var(--color-emerald-600);
+        }
+
+        .focus\:ring-emerald-500:focus {
+            --tw-ring-color: var(--color-emerald-500);
+        }
+
+        .min-h-dvh {
+            min-height: 100dvh;
+        }
+
+        .line-clamp-1 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+        }
+
+        .line-clamp-2 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+        }
+    </style>
+    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
     <script src="https://unpkg.com/alpinejs" defer></script>
     <div x-data="spotifySearch()" x-init="init" class="min-h-dvh bg-neutral-950 text-white">
 
         {{-- Stickyヘッダ（検索バー） --}}
-        <header class="sticky top-0 z-30 border-b border-white/10 bg-neutral-950/80 backdrop-blur">
+        <header class="sticky top-0 z-30 border-white/10 bg-neutral-950/80 backdrop-blur">
             <div class="max-w-6xl mx-auto px-4 py-4 flex items-center gap-3">
                 {{-- 入力 --}}
                 <div class="flex-1">
