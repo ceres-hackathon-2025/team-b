@@ -4,7 +4,7 @@
 
 @section('content')
     <section class="bg-white dark:bg-gray-900">
-        <div class="py-8 px-4 lg:py-16 w-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto">
+        <div class="py-8 px-4 lg:py-16 w-full max-w-md md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto">
             <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">新規投稿</h2>
             @if ($errors->any())
                 <div class="text-red-500 mb-4">
