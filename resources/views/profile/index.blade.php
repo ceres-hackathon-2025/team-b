@@ -15,8 +15,11 @@
             </button>
         </div>
         <div class="flex flex-col items-center pb-10">
-            <img class="w-24 h-24 mb-3 rounded-full shadow-lg"
-                src="{{ storage/app/public/{avatar_url} ?? '/images/default-avatar.png' }}" alt="avatar" />
+        <img class="w-24 h-24 mb-3 rounded-full shadow-lg"
+     src="{{ $user->avatar_url
+            ? asset('storage/'.$user->avatar_url)
+            : asset('storage/images/default-avatar.png') }}"
+     alt="avatar" />
             <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ $user->name }}</h5>
             <span class="text-sm text-gray-500 dark:text-gray-400">{{ $user->email }}</span>
         </div>

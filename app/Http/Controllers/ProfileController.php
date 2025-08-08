@@ -37,8 +37,8 @@ class ProfileController extends Controller
             }
         
             // 保存先: storage/app/public/images
-            $path = $request->file('avatar')->store('public/images');
-            $validated['avatar_url'] = str_replace('public/', '', $path);
+            $path = $request->file('avatar')->store('images', 'public');
+            $validated['avatar_url'] = $path; // 'images/xxxx.png'
         }
 
         // ---------- ユーザー更新 ----------
