@@ -201,7 +201,7 @@
             if (postData.music) {
                 const musicArtwork = document.createElement('img');
                 musicArtwork.classList.add('music-artwork');
-                musicArtwork.src = postData.music.photo_path ? `/storage/${postData.music.photo_path}` : 'https://via.placeholder.com/200';
+                musicArtwork.src = postData.music.photo_path ? `/storage/${postData.music.photo_path}` : '/storage/images/default-cover.png';
                 musicArtwork.alt = postData.music.title;
 
                 const musicTitle = document.createElement('span');
@@ -232,7 +232,7 @@
 
             const userAvatar = document.createElement('img');
             userAvatar.classList.add('user-avatar');
-            userAvatar.src = postData.user && postData.user.avatar ? `/storage/${postData.user.avatar}` : 'https://via.placeholder.com/60';
+            userAvatar.src = postData.user && postData.user.avatar_url ? `/storage/${postData.user.avatar_url}` : '/storage/images/default-avatar.png';
             userAvatar.alt = postData.user ? postData.user.name : 'Dummy User';
 
             const description = document.createElement('p');
