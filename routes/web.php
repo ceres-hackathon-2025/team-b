@@ -33,6 +33,6 @@ Route::post('/signup', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 // 検索ページ
-// routes/web.php（画面用）
-Route::get('/search', [SearchController::class, 'view']); // Bladeを返す
-Route::get('/searchapi', [SearchController::class, 'index']);   // JSONで返す想定
+// routes/web.php
+Route::get('/search', [SearchController::class, 'view'])->name('search.view');   // 画面
+Route::get('/searchapi', [SearchController::class, 'index'])->name('search.api'); // JSON

@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/alpinejs" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs" defer></script>
 <div x-data="spotifySearch()" x-init="init" class="min-h-dvh bg-neutral-950 text-white">
 
   {{-- Stickyヘッダ（検索バー） --}}
@@ -17,7 +17,7 @@
         <input
           x-model="q" @input="onInput"
           class="w-full pl-11 pr-4 py-3 rounded-xl bg-neutral-900 ring-1 ring-neutral-800 focus:ring-emerald-500 outline-none placeholder:text-neutral-400"
-          placeholder="アーティスト・曲・ボーカル特徴で検索（例：ハスキー ビブラート）" />
+          placeholder="アーティスト・ボーカル特徴で検索（例：ハスキー ビブラート）" />
       </div>
     </div>
 
@@ -38,26 +38,6 @@
 </header>
 
   <main class="max-w-6xl mx-auto px-4 py-6 space-y-10">
-
-    {{-- 入力が空のとき：Spotifyの「ジャンル」っぽいカードグリッド --}}
-    <template x-if="!q && items.length === 0">
-      <section>
-        <h2 class="text-xl font-semibold mb-4">見つけよう</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          <template x-for="c in categories" :key="c.title">
-            <a href="#" @click.prevent="addTag(c.sample); refresh()"
-               class="relative overflow-hidden rounded-xl p-4 h-32 ring-1 ring-white/10 hover:ring-white/20 transition">
-              <div class="absolute inset-0" :style="`background: linear-gradient(135deg, ${c.bg1}, ${c.bg2});`"></div>
-              <div class="relative z-10">
-                <div class="text-lg font-bold" x-text="c.title"></div>
-                <div class="text-sm opacity-80 mt-1" x-text="c.desc"></div>
-                <div class="mt-3 inline-flex px-2 py-1 rounded bg-white/20 text-xs">サンプル: <span x-text="c.sample" class="ml-1 font-medium"></span></div>
-              </div>
-            </a>
-          </template>
-        </div>
-      </section>
-    </template>
 
     {{-- 最近の検索（任意保存。今はセッション代わりにメモリで） --}}
     <template x-if="recent.length && !q">
@@ -169,7 +149,6 @@
 
   </main>
 </div>
-
 <script>
 function spotifySearch() {
   return {
@@ -190,27 +169,41 @@ function spotifySearch() {
       { title: "テンポで探す", desc: "アップテンポ / バラード", sample: "アップテンポ", bg1:"#84cc16", bg2:"#06b6d4" },
     ],
 
-    init() { if (this.q) this.refresh(); },
+    init() { 
+      console.log("🔍 初期q:", this.q);
+      if (this.q) this.refresh(); 
+    },
 
-    onInput() { clearTimeout(this._t); this._t = setTimeout(() => this.refresh(), 350); },
+    onInput() { 
+      clearTimeout(this._t); 
+      this._t = setTimeout(() => this.refresh(), 350); 
+    },
 
-    refresh() { this.items = []; this.fetch(); this.recordRecent(); },
+    refresh() { 
+      this.items = []; 
+      this.fetch(); 
+      this.recordRecent(); 
+    },
 
     async fetch() {
       try {
-        this.loading = true; this.error = "";
+        this.loading = true; 
+        this.error = "";
         if (this.controller) this.controller.abort();
         this.controller = new AbortController();
 
-        const url = new URL('searchapi', window.location.origin);
+        const url = new URL('/searchapi', window.location.origin);
         if (this.q) url.searchParams.set('q', this.q);
         this.selectedTags.forEach(t => url.searchParams.append('tags[]', t));
         url.searchParams.set('sort', this.sort);
         url.searchParams.set('per_page', 20);
 
+        console.log("📡 リクエストURL:", url.toString());
+
         const res = await fetch(url, { signal: this.controller.signal });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
+        console.log("📥 レスポンス:", json);
         this.items = json.data ?? [];
       } catch (e) {
         if (e.name !== 'AbortError') this.error = e.message || "不明なエラー";
@@ -219,21 +212,41 @@ function spotifySearch() {
       }
     },
 
-    addTag(t){ if(!this.selectedTags.includes(t)) this.selectedTags.push(t); },
-    toggleTag(t){ const i=this.selectedTags.indexOf(t); i>=0 ? this.selectedTags.splice(i,1) : this.selectedTags.push(t); },
+    addTag(t){ 
+      if(!this.selectedTags.includes(t)) this.selectedTags.push(t); 
+    },
+    toggleTag(t){ 
+      const i=this.selectedTags.indexOf(t); 
+      i>=0 ? this.selectedTags.splice(i,1) : this.selectedTags.push(t); 
+    },
     clearTags(){ this.selectedTags = []; },
 
     recordRecent(){
       if (!this.q) return;
       this.recent = [this.q, ...this.recent.filter(v => v!==this.q)].slice(0,8);
       localStorage.setItem('recentSearches', JSON.stringify(this.recent));
-      const usp = new URLSearchParams(location.search); usp.set('q', this.q);
+      const usp = new URLSearchParams(location.search); 
+      usp.set('q', this.q);
       history.replaceState(null, "", location.pathname + "?" + usp.toString());
     },
 
-    thumb(it){ return it.thumb ? (it.thumb.startsWith('http') ? it.thumb : (`/storage/${it.thumb}`)) : '/placeholder.png'; },
+    thumb(it){ 
+      return it.thumb 
+        ? (it.thumb.startsWith('http') ? it.thumb : (`/storage/${it.thumb}`)) 
+        : '/placeholder.png'; 
+    },
 
-    play(it){ this.current = it; }
+    play(it) {
+    // 再生対象を保持したいなら残す
+    this.current = it;
+
+    // クリックで post/{id} に遷移
+    if (it?.id) {
+      window.location.href = `/post/${it.id}`;
+    } else {
+      console.error("❌ IDが存在しないため遷移できません", it);
+    }
+  }
   }
 }
 </script>
