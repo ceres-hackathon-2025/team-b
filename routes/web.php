@@ -2,10 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-
-//controllers
 use App\Http\Controllers\AuthController;
+
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SearchController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,11 +24,13 @@ Route::middleware('auth')->group(function () {
 });
 
 // 認証
-
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/signup', [AuthController::class, 'showSignupForm'])->name('signup');
 Route::post('/signup', [AuthController::class, 'register']);
 
-
+// ログアウト(ログイン時のみ有効)
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+
+// 検索ページ
+Route::get('/search', [SearchController::class, 'index']);   // JSONで返す想定
