@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\Music;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller
 {
@@ -53,14 +54,24 @@ class PostController extends Controller
     // 個別の投稿を表示するが疑似SPAで事実上タイムライン
     public function show(string $id)
     {
-        $post = Post::findOrFail($id);
+        $post = Post::with(['user', 'music'])->findOrFail($id);
         return view('posts.show', compact('post'));
     }
 
+    /**
+     * @return JsonResponse
+     */
     // タイムライン用のエンドポイント(json)
-    public function load_more()
+    public function load_more(): JsonResponse
     {
-        // return json
+        $post = Post::inRandomOrder()->first();
+
+        if ($post) {
+            $post->load(['user', 'music']);
+            return response()->json($post);
+        }
+
+        return response()->json(null, 404);
     }
 
 }
