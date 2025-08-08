@@ -32,4 +32,6 @@ Route::post('/signup', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 // 検索ページ
-Route::get('/search', [SearchController::class, 'index']);   // JSONで返す想定
+// routes/web.php（画面用）
+Route::get('/search', [SearchController::class, 'view']); // Bladeを返す
+Route::get('/searchapi', [SearchController::class, 'index']);   // JSONで返す想定
