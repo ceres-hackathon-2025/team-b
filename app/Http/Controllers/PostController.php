@@ -9,11 +9,14 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    // 廃止
+    // ランダムに/posts/{id}へリダイレクト
     public function index()
     {
-        $posts = Post::orderBy('created_at', 'desc')->get();
-        return view('posts.index', compact('posts'));
+        $post = Post::inRandomOrder()->first();
+        if (!$post) {
+            return redirect()->route('home')->with('error', '投稿がありません。');
+        }
+        return redirect()->route('posts.show', $post->id);
     }
 
     // 投稿の作成画面を表示
