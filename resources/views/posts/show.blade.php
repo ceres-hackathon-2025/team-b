@@ -188,6 +188,8 @@
             item.style.backgroundColor = `hsl(${Math.random() * 360}, 50%, 30%)`;
             if (postData.id) {
                 item.dataset.postId = postData.id;
+                item.dataset.userId = postData.user_id;
+                item.dataset.musicId = postData.music_id;
             }
 
             audioObserver.observe(item);
@@ -199,7 +201,7 @@
             if (postData.music) {
                 const musicArtwork = document.createElement('img');
                 musicArtwork.classList.add('music-artwork');
-                musicArtwork.src = postData.music.photo_path ? `/storage/${postData.music.photo_path}` : 'https://via.placeholder.com/200';
+                musicArtwork.src = postData.music.photo_path ? `/storage/${postData.music.photo_path}` : '/storage/images/default-cover.png';
                 musicArtwork.alt = postData.music.title;
 
                 const musicTitle = document.createElement('span');
@@ -230,7 +232,7 @@
 
             const userAvatar = document.createElement('img');
             userAvatar.classList.add('user-avatar');
-            userAvatar.src = postData.user && postData.user.avatar ? `/storage/${postData.user.avatar}` : 'https://via.placeholder.com/60';
+            userAvatar.src = postData.user && postData.user.avatar_url ? `/storage/${postData.user.avatar_url}` : '/storage/images/default-avatar.png';
             userAvatar.alt = postData.user ? postData.user.name : 'Dummy User';
 
             const description = document.createElement('p');
@@ -267,6 +269,9 @@
                 if (entry.isIntersecting) {
                     // URLを更新
                     const postId = entry.target.dataset.postId;
+                    const userId = entry.target.dataset.userId;
+                    const musicId = entry.target.dataset.musicId;
+
                     if (postId) {
                         const newUrl = `/posts/${postId}`;
                         if (window.location.pathname !== newUrl) {
@@ -317,9 +322,18 @@
 
             isFetchingVideos[channelIndex] = true;
             loadingIndicator.classList.add('show');
+
+            // チャンネル内の最初の投稿からuser_idを取得
+            const firstPost = channelElement.querySelector('.video-item');
+            const userId = firstPost ? firstPost.dataset.userId : null;
             
+            let url = "{{ route('posts.load_more') }}";
+            if (userId) {
+                url += `?user=${userId}`;
+            }
+
             try {
-                const response = await fetch("{{ route('posts.load_more') }}");
+                const response = await fetch(url);
                 if (response.ok) {
                     const postData = await response.json();
                     addPostToChannel(channelElement, postData);
@@ -340,15 +354,29 @@
 
             isFetchingChannels = true;
             loadingIndicator.classList.add('show');
+
+            // 最後のチャンネルの最初の投稿からmusic_idを取得
+            const lastChannel = mainContainer.querySelector('.channel-row:last-child');
+            const firstPostInLastChannel = lastChannel ? lastChannel.querySelector('.video-item') : null;
+            const musicId = firstPostInLastChannel ? firstPostInLastChannel.dataset.musicId : null;
+
+            let url = "{{ route('posts.load_more') }}";
+            if (musicId) {
+                url += `?music=${musicId}`;
+            }
             
             try {
-                const response = await fetch("{{ route('posts.load_more') }}");
+                const response = await fetch(url);
                  if (response.ok) {
                     const postData = await response.json();
                     const currentChannelCount = mainContainer.children.length;
                     const newChannel = createChannelRow(currentChannelCount + 1);
                     addPostToChannel(newChannel, postData);
                     mainContainer.appendChild(newChannel);
+
+                    // 新しく追加したチャンネルにも動画を読み込んでスワイプ可能にする
+                    fetchMoreVideos(newChannel);
+                    fetchMoreVideos(newChannel);
                 }
             } catch (error) {
                 console.error('Error fetching more channels:', error);
