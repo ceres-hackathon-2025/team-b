@@ -5,7 +5,10 @@
 
 @section('content')
     <div class="w-full bg-white rounded-lg dark:bg-gray-800 px-4 max-w-md md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto">
-        <div class="flex justify-end px-4 pt-4">
+
+        {{-- 上部ボタン群（編集 & ログアウト） --}}
+        <div class="flex justify-between px-4 pt-4">
+            {{-- 編集ボタン --}}
             <button data-modal-target="editProfileModal" data-modal-toggle="editProfileModal"
                 class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -13,16 +16,31 @@
                         d="M15.232 5.232l3.536 3.536M16.732 3.732a2.5 2.5 0 113.536 3.536l-9.192 9.192a4 4 0 01-1.414.944l-4 1.333 1.333-4a4 4 0 01.944-1.414l9.192-9.192z" />
                 </svg>
             </button>
+
+            {{-- ログアウトボタン --}}
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit"
+                    class="inline-block text-red-500 hover:bg-red-100 dark:hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-200 dark:focus:ring-red-700 rounded-lg text-sm p-1.5">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+                    </svg>
+                </button>
+            </form>
         </div>
+
+        {{-- プロフィール本体 --}}
         <div class="flex flex-col items-center pb-10">
-        <img class="w-24 h-24 mb-3 rounded-full shadow-lg"
-     src="{{ $user->avatar_url
-            ? asset('storage/'.$user->avatar_url)
-            : asset('storage/images/default-avatar.png') }}"
-     alt="avatar" />
+            <img class="w-24 h-24 mb-3 rounded-full shadow-lg"
+                src="{{ $user->avatar_url
+                        ? asset('storage/'.$user->avatar_url)
+                        : asset('storage/images/default-avatar.png') }}"
+                alt="avatar" />
             <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ $user->name }}</h5>
             <span class="text-sm text-gray-500 dark:text-gray-400">{{ $user->email }}</span>
         </div>
+
         <div class="px-6 py-4">
             <p class="text-gray-700 dark:text-gray-300">{{ $user->bio ?? '自己紹介はまだありません。' }}</p>
         </div>
@@ -49,6 +67,7 @@
                     <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data"
                         class="space-y-6">
                         @csrf @method('PUT')
+
                         {{-- アバターアップロード --}}
                         <div>
                             <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">アバター画像</label>
@@ -87,4 +106,5 @@
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
+@endsection
