@@ -1,7 +1,7 @@
 <div class="sticky top-0 flex justify-between bg-white text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
 
-        <a href="{{ route('home') }}" class="flex-shrink-0 ml-2">
-            <img src="{{ asset('/666.png') }}"  class="h-11 w-auto cursor-pointer mt-1">
+        <a href="{{ route('home') }}" class="flex-shrink-0 ml-3">
+            <img src="{{ asset('/666.png') }}"  class="h-11 w-auto cursor-pointer mt-1.5">
         </a>
 
 
@@ -19,5 +19,5 @@
                 d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
         </svg>
     </a>
-    <div class ="w-12"></div>
+    <div class ="w-1"></div>
 </div>
