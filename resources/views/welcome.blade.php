@@ -61,12 +61,16 @@
             <img src="{{ asset('/111.png') }}" alt="ログイン" class="w-full h-auto cursor-pointer">
         </a>
         <img src="{{ asset('/333.png') }}"
-            class="fixed inset-x-0 mx-auto top-[220px] sm:top-[280px] z-40 w-[250px] h-auto cursor-pointer">
+            class="fixed inset-x-0 mx-auto top-[220px] sm:top-[280px] z-40 w-[250px] h-auto cursor-pointer"
+            style="z-index:9999;"
+            >
         <img src="{{ asset('/woman.png') }}"
-            class="fixed inset-x-0 mx-auto top-[350px] z-30 w-[350px] h-auto cursor-pointer">
+            class="fixed inset-x-0 mx-auto top-[350px] z-30 w-[600px] h-auto cursor-pointer">
         <a href="{{ route('login') }}">
             <button
-                class="animate-bounce rounded bg-blue-500 px-6 py-5 font-bold text-white hover:bg-blue-700 fixed inset-x-0 mx-auto bottom-8 sm:bottom-16 z-50 w-[60vw] sm:w-[200px] max-w-[90vw] text-base sm:text-lg md:text-xl">
+                class="animate-bounce rounded bg-blue-500 px-6 py-5 font-bold text-white hover:bg-blue-700 fixed inset-x-0 mx-auto bottom-8 sm:bottom-16 z-50 w-[60vw] sm:w-[200px] max-w-[90vw] text-base sm:text-lg md:text-xl;"
+                style="z-index:9999999;"
+                >
                 聴いてみよう！
             </button>
         </a>
