@@ -35,7 +35,7 @@ class ProfileController extends Controller
             if ($user->avatar_url && Storage::disk('local')->exists('public/'.$user->avatar_url)) {
                 Storage::disk('local')->delete('public/'.$user->avatar_url);
             }
-        
+
             // 保存先: storage/app/public/images
             $path = $request->file('avatar')->store('images', 'public');
             $validated['avatar_url'] = $path; // 'images/xxxx.png'
