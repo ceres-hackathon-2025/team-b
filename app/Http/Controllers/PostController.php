@@ -74,9 +74,19 @@ class PostController extends Controller
      * @return JsonResponse
      */
     // タイムライン用のエンドポイント(json)
-    public function load_more(): JsonResponse
+    public function load_more(Request $request): JsonResponse
     {
-        $post = Post::inRandomOrder()->first();
+        $query = Post::query();
+
+        if ($request->has('user')) {
+            $query->where('user_id', $request->user);
+        }
+
+        if ($request->has('music')) {
+            $query->where('music_id', $request->music);
+        }
+
+        $post = $query->inRandomOrder()->first();
 
         if ($post) {
             $post->load(['user', 'music']);
