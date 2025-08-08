@@ -71,8 +71,11 @@ class PostController extends Controller
     }
 
     /**
+    /**
+     * @param Request $request
      * @return JsonResponse
      */
+
     // タイムライン用のエンドポイント(json)
     public function load_more(Request $request): JsonResponse
     {
