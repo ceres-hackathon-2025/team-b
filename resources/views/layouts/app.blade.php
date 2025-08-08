@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 </head>
 
-<body class="bg-white dark:bg-gray-800 min-h-screen">
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
     @hasSection('ignore-header')
         {{-- @section('ignore-header', true)でヘッダーを表示しない --}}
     @else
