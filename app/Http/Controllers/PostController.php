@@ -30,6 +30,15 @@ class PostController extends Controller
             'audio' => 'required|mimes:mp3,wav,m4a',
             'description' => 'required|string|max:255',
             'music_id' => 'required|exists:musics,id',
+        ], [
+            'audio.required' => '音声ファイルを選択してください。',
+            'audio.file' => 'アップロードされたものはファイルではありません。',
+            'audio.mimes' => '対応している音声形式は mp3, wav, aac のみです。',
+            'audio.uploaded' => '音声ファイルについて、原因不明のエラー。',
+            'description.required' => '説明文を入力してください。',
+            'description.max' => '説明文は255文字以内で入力してください。',
+            'music_id.required' => '音楽を選択してください。',
+            'music_id.exists' => '選択した音楽は存在しません。',
         ]);
 
         if ($request->file('audio')) {
